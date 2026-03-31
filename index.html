@@ -8,7 +8,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.21.4/babel.min.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.8/dist/umd/supabase.min.js"></script>
+<!-- Supabase loaded via dynamic import inside the app -->
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'Segoe UI',sans-serif;background:#0f0c29}
@@ -101,31 +101,9 @@ const WEB3FORMS_KEY     = 'f5c0a602-4c20-4704-ad34-0341daccf270';
 const ADMIN_EMAIL       = 'ajay.smartxalgo@gmail.com';
 const OWNER_UPI         = '7324897718@ptsbi';
 
-// ─── INIT SUPABASE ────────────────────────────────────────────────────────────
+// ─── INIT SUPABASE (via dynamic import — no CDN script tag needed) ──────────
 let supabase = null;
 let supabaseError = null;
-try {
-  if(SUPABASE_URL !== 'YOUR_SUPABASE_URL'){
-    // Support multiple CDN global shapes across supabase-js v2 versions
-    const createClientFn =
-      (window.supabase    && typeof window.supabase.createClient    === 'function' && window.supabase.createClient)    ||
-      (window.Supabase    && typeof window.Supabase.createClient    === 'function' && window.Supabase.createClient)    ||
-      (window.supabaseJs  && typeof window.supabaseJs.createClient  === 'function' && window.supabaseJs.createClient)  ||
-      (typeof window.createClient === 'function' && window.createClient);
-    if(!createClientFn) throw new Error('Supabase CDN not loaded — try Ctrl+Shift+R to hard refresh');
-    supabase = createClientFn(SUPABASE_URL, SUPABASE_ANON_KEY, {
-      auth: {
-        autoRefreshToken: true,
-        persistSession: true,
-        detectSessionInUrl: true
-      }
-    });
-    console.log('✅ Supabase client initialized');
-  }
-} catch(e){
-  supabaseError = e.message;
-  console.error('❌ Supabase init failed:', e.message);
-}
 
 // ─── ADMIN EMAIL NOTIFICATION (Web3Forms) ────────────────────────────────────
 async function notifyAdmin(name, email){
@@ -227,6 +205,18 @@ const BOOKS={
     {id:3,title:"Business Law",author:"Avtar Singh",edition:"12th Ed",topic:"Law",rating:4.4,free:false,amazon:"https://www.amazon.in/s?k=Business+Law+Avtar+Singh&tag=1000673-21"},
     {id:4,title:"Marketing Management",author:"Philip Kotler",edition:"16th Ed",topic:"Marketing",rating:4.8,free:false,amazon:"https://www.amazon.in/s?k=Marketing+Management+Kotler&tag=1000673-21"},
     {id:5,title:"Principles of Economics",author:"N. Gregory Mankiw",edition:"9th Ed",topic:"Economics",rating:4.7,free:false,amazon:"https://www.amazon.in/s?k=Principles+Economics+Mankiw&tag=1000673-21"},
+  ],
+  AIML:[
+    {id:1,title:"Hands-On Machine Learning with Scikit-Learn, Keras & TensorFlow",author:"Aurélien Géron",edition:"3rd Ed",topic:"ML/DL",rating:4.9,free:false,amazon:"https://www.amazon.in/s?k=Hands+On+Machine+Learning+Geron&tag=1000673-21"},
+    {id:2,title:"Deep Learning",author:"Goodfellow, Bengio & Courville",edition:"1st Ed",topic:"Deep Learning",rating:4.9,free:true,amazon:"https://www.amazon.in/s?k=Deep+Learning+Goodfellow+Bengio&tag=1000673-21"},
+    {id:3,title:"Pattern Recognition and Machine Learning",author:"Christopher Bishop",edition:"1st Ed",topic:"ML Theory",rating:4.8,free:false,amazon:"https://www.amazon.in/s?k=Pattern+Recognition+Machine+Learning+Bishop&tag=1000673-21"},
+    {id:4,title:"Reinforcement Learning: An Introduction",author:"Sutton & Barto",edition:"2nd Ed",topic:"RL",rating:4.9,free:true,amazon:"https://www.amazon.in/s?k=Reinforcement+Learning+Sutton+Barto&tag=1000673-21"},
+    {id:5,title:"Natural Language Processing with Transformers",author:"Lewis Tunstall et al.",edition:"1st Ed",topic:"NLP",rating:4.8,free:false,amazon:"https://www.amazon.in/s?k=NLP+Transformers+Tunstall&tag=1000673-21"},
+    {id:6,title:"Computer Vision: Algorithms and Applications",author:"Richard Szeliski",edition:"2nd Ed",topic:"Computer Vision",rating:4.7,free:true,amazon:"https://www.amazon.in/s?k=Computer+Vision+Algorithms+Szeliski&tag=1000673-21"},
+    {id:7,title:"Python Machine Learning",author:"Sebastian Raschka & Vahid Mirjalili",edition:"3rd Ed",topic:"Python ML",rating:4.7,free:false,amazon:"https://www.amazon.in/s?k=Python+Machine+Learning+Raschka&tag=1000673-21"},
+    {id:8,title:"The Elements of Statistical Learning",author:"Hastie, Tibshirani & Friedman",edition:"2nd Ed",topic:"Statistics/ML",rating:4.8,free:true,amazon:"https://www.amazon.in/s?k=Elements+Statistical+Learning+Hastie&tag=1000673-21"},
+    {id:9,title:"Artificial Intelligence: A Modern Approach",author:"Russell & Norvig",edition:"4th Ed",topic:"AI Foundations",rating:4.9,free:false,amazon:"https://www.amazon.in/s?k=Artificial+Intelligence+Russell+Norvig&tag=1000673-21"},
+    {id:10,title:"Mathematics for Machine Learning",author:"Deisenroth, Faisal & Ong",edition:"1st Ed",topic:"Maths for ML",rating:4.8,free:true,amazon:"https://www.amazon.in/s?k=Mathematics+Machine+Learning+Deisenroth&tag=1000673-21"},
   ]
 };
 
@@ -1066,7 +1056,7 @@ function BooksLibrary(){
   const [dept,setDept]=useState('CSE');
   const [search,setSearch]=useState('');
   const [topicFilter,setTopicFilter]=useState('All');
-  const depts=['CSE','IT','ECE','ME','EE','Civil','Science','Arts','Commerce'];
+  const depts=['CSE','IT','AIML','ECE','ME','EE','Civil','Science','Arts','Commerce'];
   const books=(BOOKS[dept]||[]).filter(b=>{
     const matchSearch=b.title.toLowerCase().includes(search.toLowerCase())||b.author.toLowerCase().includes(search.toLowerCase());
     const matchTopic=topicFilter==='All'||b.topic===topicFilter;
@@ -2524,7 +2514,22 @@ function App(){
   );
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+// Load Supabase via dynamic import, then render the app
+(async()=>{
+  if(SUPABASE_URL !== 'YOUR_SUPABASE_URL'){
+    try{
+      const {createClient} = await import('https://esm.sh/@supabase/supabase-js@2');
+      supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+        auth:{autoRefreshToken:true, persistSession:true, detectSessionInUrl:true}
+      });
+      console.log('✅ Supabase ready');
+    }catch(e){
+      supabaseError = e.message;
+      console.error('❌ Supabase init failed:',e.message);
+    }
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+})();
 </script>
 </body>
 </html>
