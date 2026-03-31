@@ -463,12 +463,14 @@ function AuthPage({mode,onDone,onSwitch}){
 
           // Check if email confirmation is required
           if(data?.user && !data.session){
-            // Email confirmation mode — still save to DB optimistically
-            await supabase.from('user_profiles').upsert({
+            // Email confirmation mode — save to DB optimistically
+            const {error:upErr1}=await supabase.from('user_profiles').upsert({
               id:data.user.id, name:form.name.trim(),
               email:form.email.trim().toLowerCase(),
               created_at:new Date().toISOString()
-            }).then(r=>{ if(r.error) console.warn('Profile save error:',r.error.message); });
+            },{onConflict:'id',ignoreDuplicates:false});
+            if(upErr1) console.warn('⚠️ Signup profile save failed:',upErr1.message);
+            else console.log('✅ user_profiles saved (email confirmation pending) for',form.email);
             await notifyAdmin(form.name.trim(), form.email.trim().toLowerCase());
             setLoading(false);
             setErr('');
@@ -480,11 +482,13 @@ function AuthPage({mode,onDone,onSwitch}){
 
           // No email confirmation needed (already logged in)
           if(data?.user && data.session){
-            await supabase.from('user_profiles').upsert({
+            const {error:upErr2}=await supabase.from('user_profiles').upsert({
               id:data.user.id, name:form.name.trim(),
               email:form.email.trim().toLowerCase(),
               created_at:new Date().toISOString()
-            }).then(r=>{ if(r.error) console.warn('Profile save error:',r.error.message); });
+            },{onConflict:'id',ignoreDuplicates:false});
+            if(upErr2) console.warn('⚠️ Signup profile save failed:',upErr2.message);
+            else console.log('✅ user_profiles saved for',form.email);
             await notifyAdmin(form.name.trim(), form.email.trim().toLowerCase());
             const userObj={name:form.name.trim(),email:form.email.trim().toLowerCase(),id:data.user.id};
             ss('bs_current_user',userObj);
@@ -507,6 +511,19 @@ function AuthPage({mode,onDone,onSwitch}){
             setLoading(false); return;
           }
           const name=data.user.user_metadata?.name||form.email.split('@')[0];
+          // Always upsert on login — catches users who signed up via email confirmation
+          const {error:upErr}=await supabase.from('user_profiles').upsert({
+            id:data.user.id,
+            name,
+            email:data.user.email,
+            created_at:new Date().toISOString()
+          },{onConflict:'id',ignoreDuplicates:false});
+          if(upErr) console.warn('⚠️ Profile upsert on login failed:',upErr.message);
+          else console.log('✅ user_profiles saved for',data.user.email);
+          // Notify admin only on truly new users (no existing row)
+          const {data:existing}=await supabase.from('user_profiles').select('created_at').eq('id',data.user.id).single();
+          const isNewUser=!existing||Math.abs(new Date()-new Date(existing.created_at))<60000;
+          if(isNewUser) await notifyAdmin(name, data.user.email);
           const userObj={name,email:data.user.email,id:data.user.id};
           ss('bs_current_user',userObj);
           setLoading(false);
