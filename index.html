@@ -59,33 +59,108 @@
   .pulse{animation:pulse 2s infinite}
   .streak-fire{font-size:24px;animation:pulse 1s infinite}
 
-  /* ── MOBILE RESPONSIVE ── */
+  /* ══════════════════════════════════════════════════
+     RESPONSIVE SYSTEM — 5 breakpoints
+     Phone-S  : ≤480px
+     Phone-L  : 481–767px
+     Tablet   : 768–1023px
+     Laptop   : 1024–1279px
+     Desktop  : ≥1280px
+  ══════════════════════════════════════════════════ */
+
+  /* ── TABLET: icon-only sidebar (68px) ── */
+  @media(min-width:768px) and (max-width:1023px){
+    .sidebar{width:68px!important;padding:16px 6px!important}
+    .sidebar-brand span:last-child,.sidebar-user,.nav-label{display:none!important}
+    .nav-item{justify-content:center!important;padding:10px 4px!important;border-left:none!important}
+    .nav-item.active{border-left:none!important;border-radius:10px!important}
+    .nav-item span:first-child{font-size:20px!important}
+    .main-wrap{margin-left:68px!important;max-width:calc(100vw - 68px)!important;padding:24px 20px!important}
+    .settings-grid{grid-template-columns:1fr!important}
+    .two-col{grid-template-columns:1fr!important}
+    .col-reverse{grid-template-columns:1fr!important}
+    .perf-grid{grid-template-columns:1fr!important}
+    .gov-grid{grid-template-columns:1fr!important}
+    .routine-grid{grid-template-columns:1fr!important}
+    .notes-upload-grid{grid-template-columns:1fr!important}
+    .task-add-grid{grid-template-columns:1fr 1fr!important;row-gap:10px!important}
+    .job-search-grid{grid-template-columns:1fr 1fr!important;row-gap:10px!important}
+  }
+
+  /* ── LAPTOP: full sidebar, tighter padding ── */
+  @media(min-width:1024px) and (max-width:1279px){
+    .main-wrap{padding:24px 28px!important}
+    .settings-grid{grid-template-columns:1fr 1fr}
+  }
+
+  /* ── DESKTOP ── */
+  @media(min-width:1280px){
+    .main-wrap{padding:32px 40px!important}
+    .settings-grid{grid-template-columns:1fr 1fr}
+  }
+
+  /* ── PHONE (≤767px): bottom navigation bar ── */
   @media(max-width:767px){
     .sidebar{
       width:100%!important;height:auto!important;min-height:0!important;
       top:auto!important;bottom:0!important;left:0!important;
-      flex-direction:row!important;padding:4px 2px!important;
-      border-right:none!important;border-top:1px solid rgba(255,255,255,0.12)!important;
-      overflow-x:auto;overflow-y:hidden;gap:0!important
+      flex-direction:row!important;padding:2px 0!important;
+      border-right:none!important;border-top:1px solid rgba(255,255,255,0.1)!important;
+      overflow-x:auto;overflow-y:hidden;gap:0!important;
+      background:rgba(10,8,30,0.98)!important;backdrop-filter:blur(16px)!important
     }
     .sidebar-brand,.sidebar-user{display:none!important}
     .nav-item{
-      flex-direction:column!important;gap:2px!important;
-      padding:6px 2px!important;min-width:52px!important;
-      flex:1;font-size:8px!important;text-align:center!important;
-      border-left:none!important;border-radius:8px!important
+      flex-direction:column!important;gap:1px!important;
+      padding:5px 2px!important;min-width:46px!important;
+      flex:1;text-align:center!important;
+      border-left:none!important;border-radius:6px!important
     }
-    .nav-item.active{border-left:none!important;background:rgba(99,102,241,0.25)!important}
-    .nav-item span:first-child{font-size:17px!important}
-    .main-wrap{margin-left:0!important;max-width:100vw!important;padding:16px 12px 80px!important}
+    .nav-item.active{border-left:none!important;background:rgba(99,102,241,0.28)!important}
+    .nav-item span:first-child{font-size:16px!important}
+    .nav-label{font-size:7.5px!important;line-height:1.2!important;color:inherit!important}
+    .main-wrap{margin-left:0!important;max-width:100vw!important;padding:14px 10px 76px!important}
     .settings-grid{grid-template-columns:1fr!important}
     .two-col{grid-template-columns:1fr!important}
-    .float-timer{bottom:68px!important;right:12px!important;font-size:11px!important;padding:6px 12px!important}
+    .perf-grid{grid-template-columns:1fr!important}
+    .gov-grid{grid-template-columns:1fr!important}
+    .routine-grid{grid-template-columns:1fr!important}
+    .notes-upload-grid{grid-template-columns:1fr!important}
+    .col-reverse{grid-template-columns:1fr!important}
+    .task-add-grid{grid-template-columns:1fr!important;row-gap:10px!important}
+    .job-search-grid{grid-template-columns:1fr!important;row-gap:10px!important}
+    .float-timer{bottom:66px!important;right:10px!important;font-size:11px!important;padding:6px 12px!important}
     .book-card{padding:12px!important}
     .job-card{padding:12px!important}
+    .card{padding:14px!important}
+    h1,h2{font-size:20px!important}
+    .tab-btn{padding:6px 12px!important;font-size:12px!important}
   }
-  @media(min-width:768px){
-    .settings-grid{grid-template-columns:1fr 1fr}
+
+  /* ── PHONE-S extra tweaks (≤380px) ── */
+  @media(max-width:380px){
+    .nav-label{display:none!important}
+    .nav-item{min-width:36px!important;padding:8px 2px!important}
+    .nav-item span:first-child{font-size:18px!important}
+    .main-wrap{padding:12px 8px 68px!important}
+  }
+
+  /* ── LANDING PAGE responsive ── */
+  .hero-title{font-size:clamp(26px,5vw,52px);font-weight:900;color:#fff;line-height:1.15;margin-bottom:20px}
+  .hero-sub{font-size:clamp(14px,2vw,18px);max-width:580px;margin:0 auto 32px;color:#94a3b8;line-height:1.6}
+  .hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  .feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:20px}
+
+  /* ── AUTH / ONBOARDING forms — full width on small screens ── */
+  @media(max-width:480px){
+    .auth-box{padding:24px 16px!important;border-radius:14px!important}
+  }
+
+  /* ── TOUCH-friendly tap targets ── */
+  @media(hover:none){
+    .btn-primary,.btn-ghost{padding:12px 20px!important;font-size:14px!important}
+    .tab-btn{padding:10px 14px!important}
+    .input,.select{font-size:16px!important} /* prevent iOS zoom */
   }
 </style>
 </head>
@@ -115,8 +190,10 @@ async function notifyAdmin(name, email){
       body: JSON.stringify({
         access_key: WEB3FORMS_KEY,
         botcheck: false,
+        to_email: ADMIN_EMAIL,
         subject: `🎓 New CareerPilot Signup: ${name}`,
         from_name: 'CareerPilot Notifications',
+        replyto: email,
         message: `✅ New user registered on CareerPilot!\n\n👤 Name: ${name}\n📧 Email: ${email}\n🕐 Time: ${new Date().toLocaleString('en-IN', {timeZone:'Asia/Kolkata'})}\n\n— CareerPilot Auto-Notify`
       })
     });
@@ -368,14 +445,14 @@ function LandingPage({onAuth}){
       </nav>
 
       {/* HERO */}
-      <div style={{textAlign:'center',padding:'80px 20px 60px'}}>
+      <div style={{textAlign:'center',padding:'clamp(36px,8vw,80px) 20px clamp(30px,5vw,60px)'}}>
         <div style={{display:'inline-block',background:'rgba(139,92,246,0.2)',border:'1px solid rgba(139,92,246,0.4)',borderRadius:50,padding:'6px 20px',marginBottom:24,color:'#c4b5fd',fontSize:13}}>
           🎯 India's #1 Student Success Platform
         </div>
         <h1 style={{fontSize:'clamp(32px,6vw,64px)',fontWeight:900,color:'#fff',lineHeight:1.15,marginBottom:20}}>
           Your Complete <span style={{background:'linear-gradient(135deg,#818cf8,#c084fc)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent'}}>Study Partner</span><br/>for B.Tech & Graduates
         </h1>
-        <p style={{color:'#94a3b8',fontSize:18,maxWidth:580,margin:'0 auto 40px'}}>
+        <p className="hero-sub" style={{color:'#94a3b8',fontSize:18,maxWidth:580,margin:'0 auto 40px'}}>
           AI-powered study routines, curated books, government job alerts, task tracking, and performance analytics — all in one place.
         </p>
         <div style={{display:'flex',gap:14,justifyContent:'center',flexWrap:'wrap'}}>
@@ -527,16 +604,18 @@ function AuthPage({mode,onDone,onSwitch}){
       return;
     }
 
-    // ── LOCALSTORAGE FALLBACK (when Supabase not configured yet) ──
+    // ── LOCALSTORAGE FALLBACK (Supabase CDN failed to load) ──
     await new Promise(r=>setTimeout(r,500));
     if(mode==='signup'){
       if(!form.name||!form.email||!form.password){setErr('Please fill all fields.');setLoading(false);return;}
       if(form.password!==form.confirm){setErr('Passwords do not match.');setLoading(false);return;}
       const users=ls('bs_users',[]);
       if(users.find(u=>u.email===form.email)){setErr('Email already registered.');setLoading(false);return;}
-      users.push({name:form.name,email:form.email});
+      users.push({name:form.name,email:form.email,createdAt:new Date().toISOString()});
       ss('bs_users',users);
       ss('bs_current_user',{name:form.name,email:form.email});
+      // Always notify admin even in fallback mode
+      await notifyAdmin(form.name.trim(), form.email.trim().toLowerCase());
       onDone({name:form.name,email:form.email});
     }else{
       const users=ls('bs_users',[]);
@@ -550,7 +629,7 @@ function AuthPage({mode,onDone,onSwitch}){
 
   return(
     <div style={{minHeight:'100vh',background:'linear-gradient(135deg,#0f0c29,#302b63,#24243e)',display:'flex',alignItems:'center',justifyContent:'center',padding:20}}>
-      <div className="glass" style={{borderRadius:20,padding:40,width:'100%',maxWidth:420}}>
+      <div className="glass auth-box" style={{borderRadius:20,padding:40,width:'100%',maxWidth:420}}>
         <div style={{textAlign:'center',marginBottom:30}}>
           <div style={{fontSize:36,marginBottom:8}}>⚡</div>
           <h2 style={{color:'#fff',fontWeight:800,fontSize:24}}>{mode==='signup'?'Create Account':'Welcome Back'}</h2>
@@ -731,7 +810,7 @@ function Sidebar({page,setPage,user}){
       {nav.map(n=>(
         <div key={n.id} className={`nav-item${page===n.id?' active':''}`} onClick={()=>setPage(n.id)}>
           <span style={{fontSize:16}}>{n.icon}</span>
-          <span>{n.label}</span>
+          <span className="nav-label">{n.label}</span>
         </div>
       ))}
       <div className="sidebar-user" style={{marginTop:'auto',padding:'16px 8px',borderTop:'1px solid rgba(255,255,255,0.08)'}}>
@@ -869,7 +948,7 @@ Give a 4-week study plan with specific daily time allocation, subject order, and
       </div>
 
       {/* Active subject detail */}
-      <div style={{display:'grid',gridTemplateColumns:'1fr 300px',gap:20}}>
+      <div className="routine-grid" style={{display:'grid',gridTemplateColumns:'1fr 300px',gap:20}}>
         <div className="card">
           <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
             <h3 style={{color:'#fff',fontWeight:700,fontSize:16}}>{topics[activeSubj].subject}</h3>
@@ -1004,7 +1083,7 @@ function TaskManager({tasks,setTasks,profile}){
       {/* Add task */}
       <div className="card" style={{marginBottom:20}}>
         <h4 style={{color:'#a5b4fc',fontSize:13,fontWeight:700,marginBottom:12}}>+ ADD NEW TASK</h4>
-        <div style={{display:'grid',gridTemplateColumns:'1fr auto auto',gap:10,alignItems:'end'}}>
+        <div className="task-add-grid" style={{display:'grid',gridTemplateColumns:'1fr auto auto',gap:10,alignItems:'end'}}>
           <input className="input" placeholder="Task description…" value={newTask} onChange={e=>setNewTask(e.target.value)} onKeyDown={e=>e.key==='Enter'&&addTask()}/>
           <select className="select" value={newType} onChange={e=>setNewType(e.target.value)} style={{width:110}}>
             <option value="topic">📖 Topic</option>
@@ -1253,7 +1332,7 @@ function JobFinder(){
           )}
 
           {/* Search bar */}
-          <div style={{display:'grid',gridTemplateColumns:'1fr auto auto',gap:10,marginBottom:16,alignItems:'center'}}>
+          <div className="job-search-grid" style={{display:'grid',gridTemplateColumns:'1fr auto auto',gap:10,marginBottom:16,alignItems:'center'}}>
             <input className="input" placeholder="Job title, role or skill (e.g. Software Engineer, Data Analyst, GATE)…"
               value={query} onChange={e=>setQuery(e.target.value)}
               onKeyDown={e=>e.key==='Enter'&&fetchJobs()}
@@ -1502,7 +1581,7 @@ function GovtAlerts(){
         <h2 style={{color:'#fff',fontSize:22,fontWeight:800}}>🔔 Government Job Alerts</h2>
         <p style={{color:'#64748b',fontSize:13,marginTop:4}}>Get instant email notifications for new vacancies</p>
       </div>
-      <div style={{display:'grid',gridTemplateColumns:'1fr 340px',gap:24,maxWidth:900}}>
+      <div className="gov-grid" style={{display:'grid',gridTemplateColumns:'1fr 340px',gap:24,maxWidth:900}}>
         <div>
           <div className="card" style={{marginBottom:20}}>
             <h4 style={{color:'#a5b4fc',fontSize:13,fontWeight:700,marginBottom:14}}>SELECT JOB CATEGORIES</h4>
@@ -1727,7 +1806,7 @@ function PerformanceDashboard({tasks,timerSecs}){
         ))}
       </div>
 
-      <div style={{display:'grid',gridTemplateColumns:'2fr 1fr',gap:20,marginBottom:20}}>
+      <div className="perf-grid" style={{display:'grid',gridTemplateColumns:'2fr 1fr',gap:20,marginBottom:20}}>
         {/* Study time chart */}
         <div className="card">
           <h4 style={{color:'#a5b4fc',fontWeight:700,marginBottom:20,fontSize:13}}>📅 STUDY TIME – LAST 7 DAYS</h4>
@@ -2179,7 +2258,7 @@ function NotesSection(){
               <button className="btn-primary" onClick={()=>{setUploadDone(false);setUploadForm({title:'',subject:'',exam:'GATE (CSE)',desc:'',type:'free',price:'',uploaderName:'',uploaderEmail:''});setUploadFile(null);}}>Upload Another</button>
             </div>
           ):(
-            <div style={{display:'grid',gridTemplateColumns:'1fr 340px',gap:24}}>
+            <div className="notes-upload-grid" style={{display:'grid',gridTemplateColumns:'1fr 340px',gap:24}}>
               <div className="card">
                 <h4 style={{color:'#a5b4fc',fontWeight:700,fontSize:13,marginBottom:16}}>📤 UPLOAD YOUR PDF NOTES</h4>
 
@@ -2514,20 +2593,32 @@ function App(){
   );
 }
 
-// Load Supabase via dynamic import, then render the app
-(async()=>{
-  if(SUPABASE_URL !== 'YOUR_SUPABASE_URL'){
+// Load Supabase via dynamic import — tries 3 CDNs in sequence
+async function tryLoadSupabase(){
+  const cdns = [
+    'https://esm.sh/@supabase/supabase-js@2.39.8',
+    'https://cdn.skypack.dev/@supabase/supabase-js@2.39.3',
+    'https://esm.run/@supabase/supabase-js',
+  ];
+  for(const url of cdns){
     try{
-      const {createClient} = await import('https://esm.sh/@supabase/supabase-js@2');
-      supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-        auth:{autoRefreshToken:true, persistSession:true, detectSessionInUrl:true}
-      });
-      console.log('✅ Supabase ready');
-    }catch(e){
-      supabaseError = e.message;
-      console.error('❌ Supabase init failed:',e.message);
-    }
+      const mod = await import(url);
+      const fn = mod.createClient || mod.default?.createClient;
+      if(typeof fn === 'function'){
+        supabase = fn(SUPABASE_URL, SUPABASE_ANON_KEY, {
+          auth:{autoRefreshToken:true,persistSession:true,detectSessionInUrl:true}
+        });
+        console.log('✅ Supabase ready via',url);
+        return;
+      }
+    }catch(e){ console.warn('CDN failed:',url,e.message); }
   }
+  supabaseError = 'Could not load Supabase from any CDN. Data saved locally.';
+  console.error('❌',supabaseError);
+}
+
+(async()=>{
+  if(SUPABASE_URL !== 'YOUR_SUPABASE_URL') await tryLoadSupabase();
   ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
 })();
 </script>
