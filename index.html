@@ -8,7 +8,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.21.4/babel.min.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.8/dist/umd/supabase.min.js"></script>
 <style>
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'Segoe UI',sans-serif;background:#0f0c29}
@@ -106,9 +106,14 @@ let supabase = null;
 let supabaseError = null;
 try {
   if(SUPABASE_URL !== 'YOUR_SUPABASE_URL'){
-    const sbLib = window.supabase || window.Supabase;
-    if(!sbLib) throw new Error('Supabase CDN not loaded');
-    supabase = sbLib.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    // Support multiple CDN global shapes across supabase-js v2 versions
+    const createClientFn =
+      (window.supabase    && typeof window.supabase.createClient    === 'function' && window.supabase.createClient)    ||
+      (window.Supabase    && typeof window.Supabase.createClient    === 'function' && window.Supabase.createClient)    ||
+      (window.supabaseJs  && typeof window.supabaseJs.createClient  === 'function' && window.supabaseJs.createClient)  ||
+      (typeof window.createClient === 'function' && window.createClient);
+    if(!createClientFn) throw new Error('Supabase CDN not loaded — try Ctrl+Shift+R to hard refresh');
+    supabase = createClientFn(SUPABASE_URL, SUPABASE_ANON_KEY, {
       auth: {
         autoRefreshToken: true,
         persistSession: true,
